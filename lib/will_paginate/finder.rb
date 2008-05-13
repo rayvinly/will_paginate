@@ -181,8 +181,8 @@ module WillPaginate
       # in the database. It relies on the ActiveRecord +count+ method.
       def wp_count(options, args, finder)
         excludees = [:count, :order, :limit, :offset, :readonly]
-        unless options[:select] and options[:select] =~ /^\s*DISTINCT\b/i
-          excludees << :select # only exclude the select param if it doesn't begin with DISTINCT
+        if options[:select] and options[:select] =~ /^\s*DISTINCT\b/i
+          excludees << :select # only exclude the select param if it begins with DISTINCT
         end
         # count expects (almost) the same options as find
         count_options = options.except *excludees
